@@ -1,0 +1,28 @@
+{
+  "total_contributors": 33,
+  "human_contributors": 31,
+  "bot_contributors": 2,
+  "bot_contributions": 7,
+  "human_contributions": 1594,
+  "top_contributors": [
+    {"login": "miguel-heygen", "contributions": 747, "name": "Miguel Ángel", "affiliation": "HeyGen", "type": "human", "created_at": "2025-08-31"},
+    {"login": "jrusso1020", "contributions": 555, "name": "James Russo", "affiliation": "HeyGen", "type": "human", "created_at": "2014-05-22"},
+    {"login": "vanceingalls", "contributions": 135, "name": "Vance Ingalls", "affiliation": null, "type": "human", "created_at": "2010-07-19"},
+    {"login": "ukimsanov", "contributions": 72, "name": "Ular Kimsanov", "affiliation": "HeyGen", "type": "human", "created_at": "2024-03-30"},
+    {"login": "func25", "contributions": 17, "name": "Phuong Le", "affiliation": "VictoriaMetrics (external)", "type": "human", "created_at": "2018-05-23"}
+  ],
+  "bots": [
+    {"login": "github-actions[bot]", "contributions": 4},
+    {"login": "renovate[bot]", "contributions": 3}
+  ],
+  "concentration_ratio_top2": 0.813,
+  "all_contributors": [
+    "miguel-heygen", "jrusso1020", "vanceingalls", "ukimsanov", "func25",
+    "calcarazgre646", "terencecho", "liriansu-opus", "MuTsunTsai", "kiyeonjeon21",
+    "github-actions[bot]", "Dylanwooo", "renovate[bot]", "ibrews", "Konadu-Akwasi-Akuoko",
+    "AnoKno", "CypherPoet", "yusoufu", "na-navi", "roiizchak",
+    "xiayewang-heygen", "RuochenLyu", "alexcraviotto", "afanty2021", "YHc-ode",
+    "usamaabid", "pftom", "hobostay", "puneetdixit200", "joweiser",
+    "JamesXiaoFF", "HOSS1E", "heyimcarlos"
+  ]
+}

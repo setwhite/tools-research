@@ -1,0 +1,89 @@
+{
+  "total_commits_3months": 1613,
+  "recent_commits_2weeks": 211,
+  "commit_frequency_per_day": {
+    "all_time": "~44 commits/day (1613 commits in ~37 days since repo created May 2, 2026)",
+    "recent_2weeks": "~15 commits/day",
+    "peak_daily": {
+      "2026-06-07": 19,
+      "2026-06-05": 19,
+      "2026-06-06": 11,
+      "2026-06-08": 1
+    }
+  },
+  "message_format_analysis": {
+    "format": "100% conventional commits",
+    "pattern": "type(scope): description (#NNNN)",
+    "types_observed": ["feat", "fix", "test", "refactor", "chore"],
+    "scopes_observed": ["core", "studio", "catalog", "cli", "render", "runtime", "gcp", "registry", "producer", "gsap", "gcp-cloud-run"],
+    "pr_references": "all commits reference a PR number in the subject line",
+    "message_quality": "High — all messages are unique, descriptive, and specific. No filler or repeated messages detected.",
+    "body_detail": "Most commits include multi-paragraph bodies explaining rationale, implementation approach, and sub-bullet details."
+  },
+  "vibe_coding_signals": [
+    "AI CO-AUTHORSHIP: Multiple commits by vanceingalls contain 'Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>' in commit body. Also found on jrusso1020 commits (e.g., 4da567d). This is a direct indicator of AI-generated code being committed.",
+    "BURST COMMIT PATTERN (vanceingalls): 7 commits in ~15 minutes on June 7, 2026 (19:07:59 → 19:23:27 Pacific). Four of these landed within 80 seconds (19:22:07, 19:22:34, 19:23:06, 19:23:27). This pattern is consistent with squash-merging multiple AI-generated branches in rapid succession.",
+    "EXTREME PR VELOCITY: PR numbers reached #1274 in ~37 days of repo existence (~34.4 PRs/day average). Combined with AI co-authorship, this suggests a high-volume AI-assisted development workflow where branches are generated and merged at a rate impossible for unaided human developers.",
+    "SINGLE-AUTHOR DOMINANCE: vanceingalls authors ~53% of recent commits, with miguel-heygen at ~37%. The vanceingalls pattern shows AI co-authorship; miguel-heygen shows no AI co-authorship signals, suggesting a human-led core with AI-assisted feature work.",
+    "SEQUENTIAL BRANCH MERGING: Many commits share near-identical timestamps with sequential PR numbers (e.g., #1257→#1258→#1259→#1261→#1262→#1263→#1267→#1268 all merged within 50 minutes on June 7). This is a classic vibe coding pattern: AI generates features in parallel branches, human reviews and squash-merges them in rapid succession."
+  ],
+  "sample_commits": [
+    {
+      "sha": "1fd1b31",
+      "message": "feat(catalog): add motion-blur component (#1274)",
+      "author": "vanceingalls",
+      "date": "2026-06-08T00:50:09-07:00",
+      "co_author": "Claude Sonnet 4.6"
+    },
+    {
+      "sha": "63fd322",
+      "message": "test(core): address review feedback on T6a / T10 / T7 stubs (#1268)",
+      "author": "vanceingalls",
+      "date": "2026-06-07T19:57:57-07:00",
+      "co_author": null
+    },
+    {
+      "sha": "1e705b1",
+      "message": "test(core,studio): add T3+T7 hfId targeting stubs (spec for R1) (#1267)",
+      "author": "vanceingalls",
+      "date": "2026-06-07T19:23:27-07:00",
+      "co_author": null
+    },
+    {
+      "sha": "ffc54c7",
+      "message": "refactor(core): extract maxEndTime+serialize to parsers/test-utils.ts (TU) (#1261)",
+      "author": "vanceingalls",
+      "date": "2026-06-07T19:22:07-07:00",
+      "co_author": null
+    },
+    {
+      "sha": "0bf1511",
+      "message": "feat: font resolution pipeline — compositions capture and embed their own fonts (#1255)",
+      "author": "miguel-heygen",
+      "date": "2026-06-07T17:52:19-04:00",
+      "co_author": null
+    },
+    {
+      "sha": "4da567d",
+      "message": "feat(gcp-cloud-run): Google Cloud Run + Workflows distributed render adapter (#1253)",
+      "author": "jrusso1020",
+      "date": "2026-06-07T14:43:38-07:00",
+      "co_author": "Claude Sonnet 4.6"
+    },
+    {
+      "sha": "48fcf4a",
+      "message": "feat(registry): add morph-text component and text-effects catalog section (#1247)",
+      "author": "vanceingalls",
+      "date": "2026-06-07T10:55:13-07:00",
+      "co_author": "Claude Sonnet 4.6"
+    },
+    {
+      "sha": "ebd156b",
+      "message": "fix: batch GSAP timeline construction to prevent main-thread hang (#1231) (#1249)",
+      "author": "miguel-heygen",
+      "date": "2026-06-07T09:31:13-04:00",
+      "co_author": null
+    }
+  ],
+  "notes": "Repository created ~May 2, 2026 — all 1613 commits fall within approximately 37 days. This is an extraordinarily high commit velocity (~44/day). The repository uses squash-merging into main, resulting in one commit per PR. All but one commit in the sample set have the author field matching the GitHub user, with GitHub (noreply@github.com) as committer — confirming a PR-based squash-merge workflow. miguel-heygen commits show zero AI co-authorship signals and appear to be human-authored core infrastructure work. vanceingalls commits frequently carry 'Co-Authored-By: Claude Sonnet 4.6' — a strong and direct vibe coding indicator. The project appears to be a legitimate AI-assisted development workflow with human review gates (PR squash merges), not a fully automated bot pipeline."
+}
