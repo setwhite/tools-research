@@ -156,7 +156,7 @@ feature ──      ●──●──●  随便折腾
 ```
 合并前                           合并后
 A──B──C  (master)              A──B──C──E  (master)
-    \                              \  /
+    \                              \   /
      D──E  (feature)                D─┘
 ```
 
