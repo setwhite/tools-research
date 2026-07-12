@@ -96,12 +96,14 @@ jobs:
           model_max_tokens: "16384"
 
           # 模型是否支持 reasoning/thinking（深度思考）模式
-          # DeepSeek 的 reasoning 输出可能不被 Pi SDK 正确捕获，
-          # 先关掉测试连通性，确认基础对话正常后再开
-          model_reasoning: "false"
+          # 支持的话 Agent 会在复杂任务时先思考再行动，质量更高但更慢更贵
+          model_reasoning: "true"
 
-          # thinking 级别（reasoning 关闭时此参数无效）
-          thinking_level: "medium"
+          # reasoning 模式的思考深度：
+          #   low    → 快速思考，省 token
+          #   medium → 平衡
+          #   high   → 深度思考，适合复杂任务
+          thinking_level: "max"
 
           # ==================================================================
 
