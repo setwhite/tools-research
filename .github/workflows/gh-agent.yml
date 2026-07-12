@@ -1,0 +1,167 @@
+# =============================================================================
+# gh-agent: Pi 编码 Agent 的 GitHub Actions 集成
+#
+# 作用：当你在 Issue 或 PR 中留言时，自动唤起一个 AI Agent
+#       来阅读代码、回答问题、修改文件、创建 PR。
+#
+# 原理：基于 linhan-dev/gh-agent（对 Oh My Pi Agent SDK 的 Action 封装），
+#       所有 git 操作以 github-actions[bot] 身份执行，
+#       与你的个人账号提交区分开。
+# =============================================================================
+
+name: gh-agent
+
+# ---------------------------------------------------------------------------
+# 触发条件 — 以下三种 GitHub 事件会触发 Agent
+# ---------------------------------------------------------------------------
+on:
+  # 新建 Issue 时触发
+  issues:
+    types: [opened]
+
+  # Issue 或 PR 下新增普通评论时触发
+  issue_comment:
+    types: [created]
+
+  # PR diff 的某一行被评论时触发（行级 review comment）
+  pull_request_review_comment:
+    types: [created]
+
+# ---------------------------------------------------------------------------
+# 唯一 Job：运行 Agent
+# ---------------------------------------------------------------------------
+jobs:
+  agent:
+    # 安全措施：只允许你本人触发，防止其他人通过评论恶意调用
+    # 把 'setwhite' 替换为你的 GitHub 用户名
+    if: github.event.sender.login == 'setwhite'
+
+    # 运行环境：GitHub 提供的 Ubuntu 虚拟机（免费额度：2000 分钟/月）
+    runs-on: ubuntu-latest
+
+    # Agent 需要的仓库权限
+    permissions:
+      contents: write         # 创建分支、提交代码、推送
+      issues: write           # 在 Issue 下回复评论
+      pull-requests: write    # 创建/操作 Pull Request
+
+    steps:
+      # 引用 gh-agent 封装好的 Action，一行搞定所有步骤：
+      #   → checkout 代码
+      #   → 安装 Node 25
+      #   → npm ci 装 Pi Agent SDK
+      #   → git config 设为 github-actions[bot] 身份
+      #   → 启动 Agent 会话
+      #   → 结束后上传 session 日志为 artifact
+      - uses: linhan-dev/gh-agent@v0.1.2
+        with:
+          # ==================================================================
+          # 模型连接配置
+          # ==================================================================
+
+          # 模型 API 的基础地址（不含端点路径，SDK 会自动拼接 /v1/chat/completions）
+          base_url: https://opencode.ai/zen/go/v1
+
+          # API Key，从仓库 Secret 中读取，不要硬编码
+          # 去 Settings → Secrets and variables → Actions → New secret
+          # Name: GH_AGENT_LLM_KEY   Value: 你的 API Key
+          llm_key: ${{ secrets.GH_AGENT_LLM_KEY }}
+
+          # API 协议适配器
+          #   openai-chat     → OpenAI Chat Completions (/v1/chat/completions)
+          #   openai-responses → OpenAI Responses API
+          #   anthropic-messages → Anthropic Messages API
+          provider_api: openai-chat
+
+          # 是否在请求头中带 Authorization: Bearer <key>
+          # 绝大多数 OpenAI 兼容 API 都需要设 true
+          provider_auth_header: "true"
+
+          # 模型名称，按你的 API 服务商给的填
+          model: deepseek-v4-pro
+
+          # ==================================================================
+          # 模型能力参数
+          # ==================================================================
+
+          # 模型的最大上下文窗口（输入 + 输出 token 总数上限）
+          # 超过后 Agent 会自动压缩历史对话，需要 compaction_enabled: "true"
+          model_context_window: "128000"
+
+          # 模型支持的输入模态：
+          #   text     → 仅文本
+          #   text,image → 文本 + 图片（多模态模型才需要）
+          model_input: text
+
+          # 模型单次最大输出 token 数
+          # Agent 用它来控制每次回复的长度上限
+          model_max_tokens: "16384"
+
+          # 模型是否支持 reasoning/thinking（深度思考）模式
+          # 支持的话 Agent 会在复杂任务时先思考再行动，质量更高但更慢更贵
+          model_reasoning: "true"
+
+          # reasoning 模式的思考深度：
+          #   low    → 快速思考，省 token
+          #   medium → 平衡
+          #   high   → 深度思考，适合复杂任务
+          # 注意：DeepSeek 的 thinking 实现有特殊性，如果你发现 Agent 卡住或空回复，改为 low 试试
+          # 或者直接改为 "false" 关闭 reasoning 避免兼容性问题
+          thinking_level: "max"
+
+          # ==================================================================
+          # 会话行为配置
+          # ==================================================================
+
+          # 会话上下文超过窗口限制时，是否自动压缩历史对话
+          # true  → 自动压缩，避免因上下文溢出而丢失对话记忆
+          # false → 不压缩，超出窗口时可能截断旧消息
+          compaction_enabled: "true"
+
+          # ==================================================================
+          # 工具权限配置
+          # ==================================================================
+
+          # Agent 可以使用的工具，逗号分隔
+          #   read      → 读取文件
+          #   edit      → 编辑文件（精确行替换）
+          #   write     → 创建/覆盖文件
+          #   bash      → 执行 shell 命令（含 gh CLI、git 操作等）
+          # 建议保持这四个全开，否则 Agent 无法修改代码
+          tools: "read,edit,write,bash"
+
+          # ==================================================================
+          # 上下文文件配置
+          # ==================================================================
+
+          # 是否禁用 Pi 的上下文文件（AGENTS.md、CLAUDE.md 等）
+          # ⚠️ 双重否定！false = 不禁用 = 会加载上下文文件
+          #   false → Agent 会读取仓库根目录的 AGENTS.md / CLAUDE.md
+          #           你可以在里面写编码规范、项目约定，Agent 会自动遵守
+          #   true  → 不加载，Agent 只看 prompt 本身
+          no_context_files: "false"
+
+          # 是否禁用 Pi skills（技能扩展）
+          # ⚠️ 同样是双重否定！false = 不禁用 = skills 生效
+          #   false → 加载 .omp/skills/ 下的技能文件
+          #   true  → 不加载 skills
+          no_skills: "false"
+
+          # ==================================================================
+          # 容错配置
+          # ==================================================================
+
+          # 模型请求失败时是否自动重试
+          retry_enabled: "true"
+
+          # 最大重试次数（含首次请求，即最多请求 1 + 2 = 3 次）
+          retry_max_retries: "2"
+
+          # ==================================================================
+          # 资源限制
+          # ==================================================================
+
+          # 单次 Agent 运行的最长时间（秒），超时后强制终止
+          # 30 分钟 = 1800 秒，复杂任务可能需要调大
+          # GitHub Actions 免费版单 Job 上限 6 小时
+          timeout: "1800"
