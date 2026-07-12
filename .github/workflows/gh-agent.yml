@@ -57,7 +57,7 @@ jobs:
           no_context_files:      "false"
           # false → Agent 读取仓库根目录的 AGENTS.md / CLAUDE.md
           no_skills:             "false"
-          # false → Agent 加载 .pi/skills/ 下的技能文件
+          # false → Agent 加载 .agents/skills/ 下的技能文件
 
           # ===== 容错与限制 =====
           retry_enabled:         "true"          # 模型请求失败自动重试
