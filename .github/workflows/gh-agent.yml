@@ -67,11 +67,9 @@ jobs:
           # Name: GH_AGENT_LLM_KEY   Value: 你的 API Key
           llm_key: ${{ secrets.GH_AGENT_LLM_KEY }}
 
-          # API 协议适配器（Pi SDK 支持的值）：
-          #   openai-completions  → OpenAI Chat Completions (/v1/chat/completions)
-          #   openai-responses    → OpenAI Responses API
-          #   anthropic-messages  → Anthropic Messages API
-          provider_api: openai-completions
+          # API 协议适配器（Pi SDK 支持的值）
+          # gh-agent 目前仅支持 openai-responses
+          provider_api: openai-responses
 
           # 是否在请求头中带 Authorization: Bearer <key>
           # 绝大多数 OpenAI 兼容 API 都需要设 true
