@@ -103,7 +103,7 @@ jobs:
           #   low    → 快速思考，省 token
           #   medium → 平衡
           #   high   → 深度思考，适合复杂任务
-          thinking_level: "max"
+          thinking_level: "high"
 
           # ==================================================================
 
