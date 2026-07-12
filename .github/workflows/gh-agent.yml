@@ -28,6 +28,7 @@ jobs:
           base_url:              https://opencode.ai/zen/go/v1
           # API Key 存在仓库 Secret 中，不要硬编码
           # Settings → Secrets and variables → Actions → New secret
+          llm_key:               ${{ secrets.GH_AGENT_LLM_KEY }}
           # openai-completions  → Chat Completions (/v1/chat/completions)
           # openai-responses    → Responses API (/v1/responses)
           # anthropic-messages  → Anthropic Messages API
